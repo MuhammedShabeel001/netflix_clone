@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:netflix_api/models/upcoming_model.dart';
+import 'package:netflix_api/services/api_services.dart';
+import 'package:netflix_api/widgets/moviecard_widget.dart';
 
-class ScreenHome extends StatefulWidget {
+class ScreenHome extends StatefulWidget { 
   const ScreenHome({super.key});
 
   @override
@@ -8,6 +11,15 @@ class ScreenHome extends StatefulWidget {
 }
 
 class _ScreenHomeState extends State<ScreenHome> {
+  late Future<UpcomingMovieModel> upcomingFuture;
+  ApiServices apiServices = ApiServices();
+
+  @override
+  void initState() {
+    super.initState();
+    upcomingFuture = apiServices.getUpcomingMovies();
+  }
+
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
@@ -17,7 +29,7 @@ class _ScreenHomeState extends State<ScreenHome> {
           InkWell(
             onTap: () {
             },
-            child: Icon(
+            child:const Icon(
               Icons.search,
               size: 30,
               color: Colors.white,
@@ -37,12 +49,14 @@ class _ScreenHomeState extends State<ScreenHome> {
         ],
       ),
       backgroundColor: Colors.black,
-      body: const Center(
-        child: Text('Home',style: TextStyle(
-          color: Colors.amber,
-          fontWeight: FontWeight.bold
-        ),),
-      ),
+      body: Column(
+        children: [
+          SizedBox(
+            height: 220,
+            child: MovieCardWidget(future: upcomingFuture, headLineText: "Upcoming Movies"),
+            )
+        ],
+      )
     );
   }
 }
