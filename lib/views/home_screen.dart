@@ -1,62 +1,88 @@
 import 'package:flutter/material.dart';
-import 'package:netflix_api/models/upcoming_model.dart';
-import 'package:netflix_api/services/api_services.dart';
-import 'package:netflix_api/widgets/moviecard_widget.dart';
+import 'package:flutter/rendering.dart';
+import 'package:netflix_api/services/api_functions.dart';
+import 'package:netflix_api/widgets/appbar_widget.dart';
+import 'package:netflix_api/widgets/maincard.dart';
+import 'package:netflix_api/widgets/movies_widget.dart';
+import 'package:netflix_api/widgets/tv_widgetcard.dart';
 
-class ScreenHome extends StatefulWidget { 
-  const ScreenHome({super.key});
+class HomeScreen extends StatelessWidget {
+  HomeScreen({super.key});
 
-  @override
-  State<ScreenHome> createState() => _ScreenHomeState();
-}
+  final ScrollController _scrollController = ScrollController();
 
-class _ScreenHomeState extends State<ScreenHome> {
-  late Future<UpcomingMovieModel> upcomingFuture;
-  ApiServices apiServices = ApiServices();
+  final ValueNotifier<bool> tabBarNotifier = ValueNotifier(true);
 
-  @override
-  void initState() {
-    super.initState();
-    upcomingFuture = apiServices.getUpcomingMovies();
-  }
-
+  final ValueNotifier<bool> colorNotifier = ValueNotifier(false);
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-      appBar: AppBar(
-        title: Image.asset('assets/Logos-Readability-Netflix-logo.png',height: 80),
-        actions: [
-          InkWell(
-            onTap: () {
-            },
-            child:const Icon(
-              Icons.search,
-              size: 30,
-              color: Colors.white,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(6),
-              child: Container(
-                color: Colors.blue,
-                height:30,
-                width:30,
+    _scrollController.addListener(_scrollListner);
+    final safeAreaHeight = MediaQuery.of(context).padding.top;
+    final size = MediaQuery.sizeOf(context);
+    return Container(
+      color: Colors.black,
+      height: size.height,
+      width: double.maxFinite,
+      child: Stack(
+        children: [
+          ListView(
+            controller: _scrollController,
+            padding: EdgeInsets.zero,
+            children: [
+              Maincard(size: size),
+              Moviewidget(
+                text: ' Trending Now',
+                size: size,
+                future: getnowplaying(),
               ),
-            ),
-          )
+              Moviewidget(
+                text: 'New Releases',
+                size: size,
+                future: newRealease(),
+              ),
+              Moviewidget(
+                text: ' Top 10 Movies',
+                size: size,
+                future: topRatedMovies(),
+                key1: true,
+              ),
+              Tvcard(
+                  size: size,
+                  text: ' Bingeworthy TV Dramas',
+                  future: tvDramas()),
+              Moviewidget(
+                text: 'Up Coming Movies',
+                size: size,
+                future: upcoming(),
+              ),
+              Tvcard(
+                size: size,
+                text: ' Airing Today',
+                future: airingtoday(),
+              )
+            ],
+          ),
+          HomeAppBar(
+            colorNotifier: colorNotifier,
+            safeAreaHeight: safeAreaHeight,
+            tabBarNotifier: tabBarNotifier,
+          ),
         ],
       ),
-      backgroundColor: Colors.black,
-      body: Column(
-        children: [
-          SizedBox(
-            height: 220,
-            child: MovieCardWidget(future: upcomingFuture, headLineText: "Upcoming Movies"),
-            )
-        ],
-      )
     );
+  }
+
+  _scrollListner() {
+    if (_scrollController.position.userScrollDirection ==
+        ScrollDirection.forward) {
+      tabBarNotifier.value = true;
+    } else {
+      tabBarNotifier.value = false;
+    }
+    if (_scrollController.offset > 400) {
+      colorNotifier.value = true;
+    } else {
+      colorNotifier.value = false;
+    }
   }
 }

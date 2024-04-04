@@ -1,19 +1,22 @@
 name: netflix_api
 description: "A new Flutter project."
 
-publish_to: 'none'
+publish_to: "none"
 
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.4.0-190.1.beta <4.0.0'
+  sdk: ">=3.4.0-190.1.beta <4.0.0"
 
 dependencies:
+  bordered_text: ^2.0.0
+  carousel_slider: ^4.2.1
   cupertino_icons: ^1.0.6
   flutter:
     sdk: flutter
   google_fonts: ^6.2.1
   http: ^1.2.1
+  palette_generator: ^0.3.3+3
 
 dev_dependencies:
   flutter_lints: ^3.0.0
@@ -21,7 +24,6 @@ dev_dependencies:
     sdk: flutter
 
 flutter:
-
   uses-material-design: true
 
   assets:

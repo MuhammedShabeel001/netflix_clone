@@ -1,45 +1,49 @@
 import 'package:flutter/material.dart';
+import 'package:netflix_api/views/download_screen.dart';
 import 'package:netflix_api/views/home_screen.dart';
-import 'package:netflix_api/views/more_screen.dart';
-import 'package:netflix_api/views/search_screen.dart';
+import 'package:netflix_api/views/newandhot_screen.dart';
 
-class BottomNavBar extends StatelessWidget {
-  const BottomNavBar({super.key});
+class BottomNavBar extends StatefulWidget {
+  BottomNavBar({super.key});
 
   @override
+  State<BottomNavBar> createState() => _BottomNavBarState();
+}
+
+class _BottomNavBarState extends State<BottomNavBar> {
+  int currentindex = 0;
+
+  final List<Widget> _tabs = [
+    // Replace with your tab widgets
+    HomeScreen(),
+    NewAndHotScreen(),
+    DownloadScreen()
+  ];
+  @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 3, 
-      child: Scaffold(
-        bottomNavigationBar: Container(
-          color: Colors.black,
-          height: 70,
-          child:const TabBar(tabs: [
-            Tab(
+    return Scaffold(
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: currentindex,
+          onTap: (index) {
+            setState(() {
+              currentindex = index;
+            });
+          },
+          items: const [
+            BottomNavigationBarItem(
               icon: Icon(Icons.home),
-              text: 'Home',
+              label: 'Home',
             ),
-            Tab(
-              icon: Icon(Icons.search),
-              text: 'Search',
+            BottomNavigationBarItem(
+              icon: Icon(Icons.video_library_outlined),
+              label: 'New & Hot',
             ),
-            Tab(
-              icon: Icon(Icons.photo_library_outlined),
-              text: 'New & Hot',
+            BottomNavigationBarItem(
+              icon: Icon(Icons.download_for_offline),
+              label: 'Downloads',
             ),
           ],
-          dividerColor: Colors.transparent,
-          indicatorColor: Colors.transparent,
-          labelColor: Colors.white,
-          unselectedLabelColor:  Color.fromARGB(139, 117, 117, 117),
-          ),
         ),
-        body:const TabBarView(
-          children: [
-            ScreenHome(),
-            ScreenSearch(),
-            ScreenMore()
-          ]),
-      ));
+        body: _tabs[currentindex]);
   }
 }

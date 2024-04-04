@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 
-class ScreenMore extends StatefulWidget {
-  const ScreenMore({super.key});
+class NewAndHotScreen extends StatefulWidget {
+  const NewAndHotScreen({super.key});
 
   @override
-  State<ScreenMore> createState() => _ScreenMoreState();
+  State<NewAndHotScreen> createState() => _NewAndHotScreenState();
 }
 
-class _ScreenMoreState extends State<ScreenMore> {
+class _NewAndHotScreenState extends State<NewAndHotScreen> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
       backgroundColor: Colors.black,
       body: Center(
-        child: Text('More',style: TextStyle(
+        child: Text('New and Hot',style: TextStyle(
           color: Colors.blue,
           fontWeight: FontWeight.bold
         ),),
