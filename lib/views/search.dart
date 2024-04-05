@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:netflix_api/models/searchmodel.dart';
 import 'package:netflix_api/services/api_functions.dart';
 import 'package:netflix_api/services/api_services.dart';
+import 'package:netflix_api/widgets/searchbar_widget.dart';
+import 'package:netflix_api/widgets/tabs/appbar_widget.dart';
 
 class SearchScreen extends StatelessWidget {
   SearchScreen({super.key});
@@ -11,14 +13,14 @@ class SearchScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      // appBar: appbarWidget(
-      //     title: '',
-      //     bottom: PreferredSize(
-      //         preferredSize: const Size.fromHeight(50),
-      //         child: SearchBarWidget(
-      //           deviceSize: size,
-      //           search: searchNotifier,
-      //         ))),
+      appBar: appbarWidget(
+          title: '',
+          bottom: PreferredSize(
+              preferredSize: const Size.fromHeight(50),
+              child: SearchBarWidget(
+                deviceSize: size,
+                search: searchNotifier,
+              ))),
       body: ValueListenableBuilder(
           valueListenable: searchNotifier,
           builder: (context, controller, _) {
